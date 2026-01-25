@@ -28,7 +28,7 @@ public interface EmployeeService {
      */
     PageResult pageQuery(EmployeePageQueryDTO employeePageQueryDTO);
 
-    void startOrStop(Integer status, Long id);
+
 
 
     /**
@@ -36,5 +36,6 @@ public interface EmployeeService {
      * @param status
      * @param id
      */
+    void startOrStop(Integer status, Long id);
    
 }
