@@ -7,6 +7,7 @@ import com.sky.dto.CategoryDTO;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Employee;
+import com.sky.exception.DeletionNotAllowedException;
 import com.sky.mapper.CategoryMapper;
 import com.sky.mapper.DishMapper;
 import com.sky.mapper.SetmealMapper;
@@ -57,8 +58,22 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void deleteById(Long id) {
+        // 1. 查询菜品表
+        int countDish = dishMapper.countByCategoryId(id);
+        if (countDish > 0) {
+            throw new DeletionNotAllowedException("当前分类下有菜品，不能删除");
+        }
 
+        // 2. 查询套餐表
+        int countSetmeal = setmealMapper.countByCategoryId(id);
+        if (countSetmeal > 0) {
+            throw new DeletionNotAllowedException("当前分类下有套餐，不能删除");
+        }
+
+        // 3. 执行删除
+        categoryMapper.deleteById(id);
     }
+
 
     @Override
     public void update(CategoryDTO categoryDTO) {
