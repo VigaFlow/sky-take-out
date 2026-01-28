@@ -46,15 +46,22 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public PageResult pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
-        PageHelper.startPage(categoryPageQueryDTO.getPage(), categoryPageQueryDTO.getPageSize());
-        Page<Category> page = categoryMapper.pageQuery(categoryPageQueryDTO);
+    public PageResult pageQuery(CategoryPageQueryDTO dto) {
+        // 开启分页
+        PageHelper.startPage(dto.getPage(), dto.getPageSize());
 
-        long total = page.getTotal();
-        List<Category> records = page.getResult();
+        // 调用 Mapper 查询（Mapper 返回 List<Category>）
+        List<Category> list = categoryMapper.pageQuery(dto);
+
+        // 强转成 Page 对象，获取 total 和 records
+        Page<Category> page = (Page<Category>) list; // 前提是 Mapper 返回的 List 实际上是 PageHelper 的 Page
+
+        long total = page.getTotal();      // 总记录数
+        List<Category> records = page.getResult();  // 当前页记录
+
         return new PageResult(total, records);
-
     }
+
 
     @Override
     public void deleteById(Long id) {
@@ -97,7 +104,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public List<Category> list(Integer type) {
-        return new ArrayList<>();
-
+        return categoryMapper.list(type);
     }
+
 }

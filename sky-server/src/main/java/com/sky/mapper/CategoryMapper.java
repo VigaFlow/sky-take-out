@@ -30,15 +30,7 @@ public interface CategoryMapper {
      * @return
      */
 
-    @Select("<script>"
-            + "SELECT * FROM category "
-            + "<where> "
-            + "  <if test='name != null and name != \"\"'>"
-            + "    name LIKE CONCAT('%', #{name}, '%')"
-            + "  </if>"
-            + "</where>"
-            + "ORDER BY sort ASC"
-            + "</script>")
+
     Page<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
 
@@ -50,4 +42,8 @@ public interface CategoryMapper {
      * @param category
      */
     void update(Category category);
+
+
+    List<Category> list(Integer type);
+
 }

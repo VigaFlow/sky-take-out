@@ -2,6 +2,7 @@ package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
 import com.sky.dto.*;
+import com.sky.entity.Category;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @RestController
 @RequestMapping("/admin")
@@ -46,12 +48,13 @@ public class CategoryController {
      */
 
     @GetMapping("/category/page")
-    @ApiOperation("菜品分类分页查询")
-    public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO){
-        log.info("菜品分页查询，参数为：{}", categoryPageQueryDTO);
-        PageResult pageResult =categoryService.pageQuery(categoryPageQueryDTO);
+    @ApiOperation("分类分页查询（可根据名称或类型过滤）")
+    public Result<PageResult> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO) {
+        log.info("分类分页查询，参数：{}", categoryPageQueryDTO);
+        PageResult pageResult = categoryService.pageQuery(categoryPageQueryDTO);
         return Result.success(pageResult);
     }
+
 
     /**
      * 根据id删除分类
@@ -95,4 +98,18 @@ public class CategoryController {
         categoryService.enableOrDisable(status, id);
         return Result.success();
     }
+
+    /**
+     * 根据类型查询分类列表
+     * @param type 分类类型
+     * @return
+     */
+    @GetMapping("/category/list")
+    @ApiOperation("根据类型查询分类列表")
+    public Result<List<Category>> list(Integer type) {
+        log.info("根据类型查询分类列表，type={}", type);
+        List<Category> categories = categoryService.list(type);
+        return Result.success(categories);
+    }
+
 }
