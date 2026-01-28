@@ -88,7 +88,11 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public void enableOrDisable(Integer status, Long id) {
-
+        Category category = Category.builder()
+                .status(status)
+                .id(id)
+                .build();
+                categoryMapper.update(category);
     }
 
     @Override
