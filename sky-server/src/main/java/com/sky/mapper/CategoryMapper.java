@@ -3,6 +3,7 @@ package com.sky.mapper;
 import com.github.pagehelper.Page;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
+import com.sky.entity.Employee;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -11,6 +12,8 @@ import java.util.List;
 
 @Mapper
 public interface CategoryMapper {
+
+
     /**
      * 新增分类
      * @param category
@@ -22,6 +25,23 @@ public interface CategoryMapper {
             "VALUES " +
             "(#{type}, #{name}, #{sort}, #{status}, #{createTime}, #{updateTime}, #{createUser}, #{updateUser})")
     void insert(Category category);
+
+    /**
+     * 分类分页查询
+     * @param categoryPageQueryDTO
+     * @return
+     */
+
+    @Select("<script>"
+            + "SELECT * FROM category "
+            + "<where> "
+            + "  <if test='name != null and name != \"\"'>"
+            + "    name LIKE CONCAT('%', #{name}, '%')"
+            + "  </if>"
+            + "</where>"
+            + "ORDER BY sort ASC"
+            + "</script>")
+    Page<Category> pageQuery(CategoryPageQueryDTO categoryPageQueryDTO);
 
 
 

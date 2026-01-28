@@ -1,10 +1,7 @@
 package com.sky.controller.admin;
 
 import com.sky.constant.JwtClaimsConstant;
-import com.sky.dto.CategoryDTO;
-import com.sky.dto.EmployeeDTO;
-import com.sky.dto.EmployeeLoginDTO;
-import com.sky.dto.EmployeePageQueryDTO;
+import com.sky.dto.*;
 import com.sky.entity.Employee;
 import com.sky.properties.JwtProperties;
 import com.sky.result.PageResult;
@@ -34,10 +31,25 @@ public class CategoryController {
      * @return
      */
     @PostMapping("/category")
+    @ApiOperation("新增分类")
   public Result save(@RequestBody CategoryDTO categoryDTO) {
         log.info("新增分类：{}", categoryDTO);
         categoryService.save(categoryDTO);
         return Result.success();
     }
 
+    /**
+     * 分类分页查询
+     *
+     * @param categoryPageQueryDTO
+     * @return
+     */
+
+    @GetMapping("/category/page")
+    @ApiOperation("菜品分类分页查询")
+    public Result<PageResult> page(CategoryPageQueryDTO categoryPageQueryDTO){
+        log.info("菜品分页查询，参数为：{}", categoryPageQueryDTO);
+        PageResult pageResult =categoryService.pageQuery(categoryPageQueryDTO);
+        return Result.success(pageResult);
+    }
 }
