@@ -4,10 +4,7 @@ import com.github.pagehelper.Page;
 import com.sky.dto.CategoryPageQueryDTO;
 import com.sky.entity.Category;
 import com.sky.entity.Employee;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -48,4 +45,9 @@ public interface CategoryMapper {
     @Delete("DELETE FROM category WHERE id = #{id}")
     void deleteById(Long id);
 
+    /**
+     * 修改分类
+     * @param category
+     */
+    void update(Category category);
 }
